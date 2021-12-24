@@ -6,7 +6,7 @@
 
 Simplified MQTT pub/sub wrapper with auto-reconnect.
 
-## Install
+## Installation
 
 ```bash
 pip install philiprehberger-mqtt-client
@@ -49,6 +49,12 @@ client.connect(background=True)
 - Last will and testament
 - Authentication
 
+
+## API
+
+| Function / Class | Description |
+|------------------|-------------|
+| `MQTTClient(broker_url, client_id, username, password, ...)` | Simplified MQTT client with decorator-based subscriptions and auto-reconnect |
 
 ## Development
 
