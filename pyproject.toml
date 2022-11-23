@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "philiprehberger-mqtt-client"
-version = "0.1.5"
+version = "0.1.8"
 description = "Simplified MQTT pub/sub wrapper with auto-reconnect"
 readme = "README.md"
 license = "MIT"
@@ -32,3 +32,9 @@ Changelog = "https://github.com/philiprehberger/py-mqtt-client/blob/main/CHANGEL
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/philiprehberger_mqtt_client"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.mypy]
+strict = true
