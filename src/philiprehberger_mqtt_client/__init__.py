@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import collections
 import json
 import threading
 import time
@@ -37,6 +38,7 @@ class MQTTClient:
         will_payload: str | None = None,
         will_qos: int = 0,
         will_retain: bool = False,
+        offline_queue_size: int = 1000,
     ) -> None:
         parsed = urlparse(broker_url)
         self._host = parsed.hostname or "localhost"
@@ -62,6 +64,10 @@ class MQTTClient:
 
         self._on_connect_callback: Callable[[], None] | None = None
         self._on_disconnect_callback: Callable[[], None] | None = None
+
+        self._offline_queue: collections.deque[tuple[str, str, int, bool]] = (
+            collections.deque(maxlen=offline_queue_size)
+        )
 
     def on(self, topic: str, qos: int = 0) -> Callable:
         """Decorator to subscribe to a topic.
@@ -96,9 +102,15 @@ class MQTTClient:
         qos: int = 0,
         retain: bool = False,
     ) -> None:
-        """Publish a message."""
+        """Publish a message.
+
+        If not connected, the message is queued and will be sent
+        automatically when the connection is re-established.
+        """
         if self._client and self._connected:
             self._client.publish(topic, payload, qos=qos, retain=retain)
+        else:
+            self._offline_queue.append((topic, payload, qos, retain))
 
     def publish_json(
         self,
@@ -144,6 +156,7 @@ class MQTTClient:
             self._connected = True
             for sub in self._subscriptions:
                 client.subscribe(sub.topic, sub.qos)
+            self._flush_queue()
             if self._on_connect_callback:
                 self._on_connect_callback()
 
@@ -204,6 +217,20 @@ class MQTTClient:
         if self._client:
             self._client.disconnect()
             self._client.loop_stop()
+
+    def _flush_queue(self) -> None:
+        """Publish all queued messages in order."""
+        while self._offline_queue and self._client and self._connected:
+            topic, payload, qos, retain = self._offline_queue.popleft()
+            self._client.publish(topic, payload, qos=qos, retain=retain)
+
+    def pending_count(self) -> int:
+        """Return the number of messages currently queued for sending."""
+        return len(self._offline_queue)
+
+    def clear_queue(self) -> None:
+        """Discard all queued messages."""
+        self._offline_queue.clear()
 
     @property
     def is_connected(self) -> bool:
