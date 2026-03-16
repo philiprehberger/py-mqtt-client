@@ -49,6 +49,14 @@ client.connect(background=True)
 - Last will and testament
 - Authentication
 
+
+## Development
+
+```bash
+pip install -e .
+python -m pytest tests/ -v
+```
+
 ## License
 
 MIT
