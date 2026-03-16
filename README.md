@@ -1,5 +1,9 @@
 # philiprehberger-mqtt-client
 
+[![Tests](https://github.com/philiprehberger/py-mqtt-client/actions/workflows/publish.yml/badge.svg)](https://github.com/philiprehberger/py-mqtt-client/actions/workflows/publish.yml)
+[![PyPI version](https://img.shields.io/pypi/v/philiprehberger-mqtt-client.svg)](https://pypi.org/project/philiprehberger-mqtt-client/)
+[![License](https://img.shields.io/github/license/philiprehberger/py-mqtt-client)](LICENSE)
+
 Simplified MQTT pub/sub wrapper with auto-reconnect.
 
 ## Install
