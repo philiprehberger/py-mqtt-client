@@ -39,17 +39,6 @@ client.connect()
 client.connect(background=True)
 ```
 
-## Features
-
-- Decorator-based subscriptions
-- MQTT wildcard support (`+` and `#`)
-- Auto-reconnect with exponential backoff
-- JSON publish/subscribe helpers
-- TLS support (`mqtts://`)
-- Last will and testament
-- Authentication
-
-
 ## API
 
 | Function / Class | Description |
