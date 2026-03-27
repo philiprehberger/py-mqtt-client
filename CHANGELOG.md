@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.0 (2026-03-27)
+
+- Add offline message queue with auto-flush on reconnect
+- Messages published while disconnected are queued and sent automatically on reconnect
+- Add `MQTTClient.pending_count()` to check queued message count
+- Add `MQTTClient.clear_queue()` to discard queued messages
+
 ## 0.1.8 (2026-03-22)
 
 - Add pytest and mypy configuration to pyproject.toml
