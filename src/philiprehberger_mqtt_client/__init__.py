@@ -122,6 +122,23 @@ class MQTTClient:
         """Publish a JSON-serialized message."""
         self.publish(topic, json.dumps(data), qos=qos, retain=retain)
 
+    def publish_many(
+        self,
+        messages: list[tuple[str, str | bytes]],
+        *,
+        qos: int = 0,
+        retain: bool = False,
+    ) -> None:
+        """Publish multiple messages, sharing QoS and retain flags.
+
+        Args:
+            messages: List of ``(topic, payload)`` tuples.
+            qos: QoS level (0, 1, or 2) applied to every message.
+            retain: Retain flag applied to every message.
+        """
+        for topic, payload in messages:
+            self.publish(topic, payload, qos=qos, retain=retain)
+
     def on_connect_handler(self, fn: Callable[[], None]) -> Callable[[], None]:
         """Decorator for connect event."""
         self._on_connect_callback = fn

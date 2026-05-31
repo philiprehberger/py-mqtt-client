@@ -41,6 +41,22 @@ client.connect()
 client.connect(background=True)
 ```
 
+### Batch publishing
+
+Publish multiple messages with shared QoS and retain flags in a single call.
+
+```python
+client.publish_many(
+    [
+        ("home/lights/living", "on"),
+        ("home/lights/kitchen", "off"),
+        ("home/lights/bedroom", "on"),
+    ],
+    qos=1,
+    retain=True,
+)
+```
+
 ### Offline Message Queue
 
 Messages published while disconnected are automatically queued and sent when the connection is re-established.
@@ -71,6 +87,7 @@ client.clear_queue()
 | `.subscribe(topic, callback, qos)` | Programmatically subscribe to a topic |
 | `.publish(topic, payload, qos, retain)` | Publish a message (queues if disconnected) |
 | `.publish_json(topic, data, qos, retain)` | Publish a JSON-serialized message |
+| `.publish_many(messages, qos=0, retain=False)` | Publish multiple `(topic, payload)` tuples with shared QoS and retain flags |
 | `.connect(background)` | Connect to the broker and start listening |
 | `.disconnect()` | Disconnect from the broker |
 | `.pending_count()` | Return number of messages in the offline queue |

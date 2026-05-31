@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.0 (2026-05-30)
+
+- Add `MQTTClient.publish_many()` for batch publishing with shared QoS and retain flags
+
 ## 0.2.1 (2026-03-31)
 
 - Standardize README to 3-badge format with emoji Support section
